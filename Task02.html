@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Development Project</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      display: grid;
+      grid-template-areas:
+        "nav nav"
+        "main aside";
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .nav {
+      grid-area: nav;
+      background: #4CAF50;
+      padding: 15px;
+      color: white;
+      text-align: center;
+      font-size: 1.5em;
+    }
+
+    .main, .aside {
+      background: #ffffff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .main {
+      grid-area: main;
+    }
+
+    .aside {
+      grid-area: aside;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input, textarea {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 8px;
+      background-color: #eee;
+      margin-top: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 4px;
+    }
+
+    .remove-btn {
+      background-color: #e74c3c;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      margin-left: 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .success-message {
+      color: green;
+      margin-top: 10px;
+      font-weight: bold;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-areas:
+          "nav"
+          "main"
+          "aside";
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="nav">My Web Project</div>
+    <div class="main">
+      <h2>Contact Form</h2>
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+      <div id="formSuccess" class="success-message">Form submitted successfully!</div>
+    </div>
+    <div class="aside">
+      <h2>To-Do List</h2>
+      <input type="text" id="taskInput" placeholder="Add a task">
+      <button onclick="addTask()">Add Task</button>
+      <div id="taskSuccess" class="success-message">Task submitted successfully!</div>
+      <ul id="taskList"></ul>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = this.name.value.trim();
+      const email = this.email.value.trim();
+      const message = this.message.value.trim();
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      const successMessage = document.getElementById('formSuccess');
+
+      if (!name || !email || !message || !emailPattern.test(email)) {
+        alert('Please fill in all fields correctly.');
+        return;
+      }
+      successMessage.style.display = 'block';
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 2000);
+      this.reset();
+    });
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const task = input.value.trim();
+      const successMessage = document.getElementById('taskSuccess');
+
+      if (task === '') return;
+
+      const li = document.createElement('li');
+      li.textContent = task;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.className = 'remove-btn';
+      removeBtn.onclick = () => li.remove();
+
+      li.appendChild(removeBtn);
+      document.getElementById('taskList').appendChild(li);
+
+      input.value = '';
+      successMessage.style.display = 'block';
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
